@@ -48,6 +48,12 @@
                 <span>牌子进度</span>
               </template>
             </el-menu-item>
+            <el-menu-item index="/segamaid">
+              <el-icon><Link /></el-icon>
+              <template #title>
+                <span>Segamaid绑定</span>
+              </template>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main class="app-main">

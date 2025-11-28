@@ -5,6 +5,7 @@ from wumeng_crawler.spiders.at_spider import ATSpider
 from wumeng_crawler.config.config import SPIDER_CONFIG
 from loguru import logger
 from typing import Dict, List, Optional, Any
+from datetime import datetime
 import concurrent.futures
 
 class SpiderManager:
@@ -79,15 +80,20 @@ class SpiderManager:
                     result = future.result()
                     if result:
                         logger.info(f"爬虫 {spider.name} 运行成功")
+                        all_data.append({
+                            "spider_name": spider.name,
+                            "data": result,
+                            "timestamp": datetime.now().isoformat()
+                        })
                     else:
-                        logger.warning(f"爬虫 {spider.name} 运行失败")
+                        logger.warning(f"爬虫 {spider.name} 运行失败或未爬取到任何数据")
                 except Exception as e:
                     logger.error(f"爬虫 {spider.name} 运行异常: {e}")
         
-        logger.info("所有爬虫运行完成")
+        logger.info(f"所有爬虫运行完成，共获取到 {len(all_data)} 个爬虫的数据")
         return all_data
     
-    def run_spider(self, spider_name: str) -> bool:
+    def run_spider(self, spider_name: str) -> Dict[str, Any]:
         """
         运行指定名称的爬虫
         
@@ -95,7 +101,7 @@ class SpiderManager:
             spider_name: 爬虫名称
             
         Returns:
-            运行结果，成功返回True，失败返回False
+            爬虫爬取到的数据，如果运行失败则返回空字典
         """
         logger.info(f"开始运行爬虫: {spider_name}")
         
@@ -106,15 +112,34 @@ class SpiderManager:
                     result = spider.run()
                     if result:
                         logger.info(f"爬虫 {spider_name} 运行成功")
+                        return {
+                            "spider_name": spider_name,
+                            "data": result,
+                            "timestamp": datetime.now().isoformat()
+                        }
                     else:
-                        logger.warning(f"爬虫 {spider_name} 运行失败")
-                    return result
+                        logger.warning(f"爬虫 {spider_name} 运行失败或未爬取到任何数据")
+                        return {
+                            "spider_name": spider_name,
+                            "data": [],
+                            "timestamp": datetime.now().isoformat()
+                        }
                 except Exception as e:
                     logger.error(f"爬虫 {spider_name} 运行异常: {e}")
-                    return False
+                    return {
+                        "spider_name": spider_name,
+                        "data": [],
+                        "timestamp": datetime.now().isoformat(),
+                        "error": str(e)
+                    }
         
         logger.error(f"未找到名称为 {spider_name} 的爬虫")
-        return False
+        return {
+            "spider_name": spider_name,
+            "data": [],
+            "timestamp": datetime.now().isoformat(),
+            "error": f"未找到名称为 {spider_name} 的爬虫"
+        }
     
     def get_spider_status(self) -> List[Dict[str, Any]]:
         """

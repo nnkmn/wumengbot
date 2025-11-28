@@ -8,6 +8,14 @@ import os
 
 from wumeng_crawler.config.config import BASE_DIR
 
+# 添加项目根目录到Python路径
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+# 导入数据库相关模块
+from app.core.db_utils import DBUtils
+from app.core.database import SessionLocal
+
 class DataProcessor:
     """
     数据处理器，用于清洗、整合和格式化爬取到的数据
@@ -268,14 +276,81 @@ class DataProcessor:
         self.logger.info(f"数据加载成功，共 {len(data)} 条")
         return data
     
-    def process(self, data: List[Dict[str, Any]], format_type: str = "json", save: bool = False) -> Any:
+    def save_to_database(self, data: List[Dict[str, Any]]) -> int:
+        """
+        将爬取数据保存到数据库
+        
+        Args:
+            data: 爬取到的数据列表
+            
+        Returns:
+            saved_count: 保存成功的数据数量
+        """
+        self.logger.info(f"开始将数据保存到数据库，共 {len(data)} 条数据")
+        
+        # 创建数据库会话
+        db = SessionLocal()
+        saved_count = 0
+        
+        try:
+            # 转换数据格式，适配数据库模型
+            crawled_data_list = []
+            for item in data:
+                # 提取必要字段
+                spider_name = item.get("site", "unknown")
+                source = item.get("domain", "unknown")
+                
+                # 确定数据类型
+                if "player" in item or "username" in item:
+                    data_type = "player"
+                    data_id = item.get("username", item.get("player_id", None))
+                elif "score" in item or "scores" in item:
+                    data_type = "score"
+                    data_id = item.get("song_id", item.get("id", None))
+                elif "song" in item or "title" in item:
+                    data_type = "song"
+                    data_id = item.get("id", None)
+                elif "plate" in item or "plates" in item:
+                    data_type = "plate"
+                    data_id = item.get("id", None)
+                else:
+                    data_type = "other"
+                    data_id = None
+                
+                # 构建数据库数据项
+                crawled_data_item = {
+                    "spider_name": spider_name,
+                    "data_type": data_type,
+                    "data_id": data_id,
+                    "data_content": item,
+                    "source": source
+                }
+                
+                crawled_data_list.append(crawled_data_item)
+            
+            # 保存数据到数据库
+            saved_count = DBUtils.save_crawled_data(db, crawled_data_list)
+            
+            self.logger.info(f"数据保存到数据库完成，共保存 {saved_count} 条数据")
+            
+        except Exception as e:
+            self.logger.error(f"将数据保存到数据库失败: {e}")
+            raise e
+        finally:
+            # 关闭数据库会话
+            db.close()
+        
+        return saved_count
+    
+    def process(self, data: List[Dict[str, Any]], format_type: str = "json", save: bool = False, save_to_db: bool = False) -> Any:
         """
         完整的数据处理流程
         
         Args:
             data: 爬取到的数据列表
             format_type: 格式化类型
-            save: 是否保存处理后的数据
+            save: 是否保存处理后的数据到文件
+            save_to_db: 是否保存处理后的数据到数据库
             
         Returns:
             处理后的数据
@@ -285,13 +360,17 @@ class DataProcessor:
         # 清洗数据
         cleaned_data = self.clean_data(data)
         
+        # 保存到数据库
+        if save_to_db and cleaned_data:
+            self.save_to_database(cleaned_data)
+        
         # 整合数据
         integrated_data = self.integrate_data(cleaned_data)
         
         # 格式化数据
         formatted_data = self.format_data(integrated_data, format_type)
         
-        # 保存数据
+        # 保存到文件
         if save:
             self.save_processed_data(formatted_data, format_type)
         

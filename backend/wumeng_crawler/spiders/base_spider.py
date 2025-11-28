@@ -58,7 +58,7 @@ class BaseSpider:
         self.retry_delay = SPIDER_CONFIG.get("RETRY_DELAY", 5)
         
         # 配置下载延迟
-        self.download_delay = SPIDER_CONFIG.get("DOWNLOAD_DELAY", 1)"DOWNLOAD_DELAY", 1.0)
+        self.download_delay = SPIDER_CONFIG.get("DOWNLOAD_DELAY", 1.0)
         
         # 配置随机下载延迟
         self.randomize_download_delay = SPIDER_CONFIG.get("RANDOMIZE_DOWNLOAD_DELAY", True)

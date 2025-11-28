@@ -66,8 +66,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { User, DataAnalysis, Music, Medal, Vue, Server, Code, ElementPlus, Database } from '@element-plus/icons-vue'
-import { Maimai } from '../components/MaimaiIcon.vue'
+import { User, DataAnalysis, Medal, Link, Check, Key } from '@element-plus/icons-vue'
+import MaimaiIcon from '../components/MaimaiIcon.vue'
 
 const router = useRouter()
 
@@ -100,31 +100,35 @@ const features = [
     desc: '查看玩家的舞将、舞霸等牌子完成进度',
     icon: 'Medal',
     path: '/plates'
+  },
+  {
+    id: 5,
+    title: 'Segamaid绑定',
+    desc: '绑定Segamaid账号，获取更多舞萌数据',
+    icon: 'Code',
+    path: '/segamaid'
   }
 ]
 
 // 技术栈数据
 const techStack = [
-  { name: 'Vue 3', icon: 'Vue', color: '#4FC08D' },
-  { name: 'FastAPI', icon: 'Server', color: '#009688' },
-  { name: 'Python', icon: 'Code', color: '#3776AB' },
-  { name: 'Element Plus', icon: 'ElementPlus', color: '#409EFF' },
+  { name: 'Vue 3', icon: 'Link', color: '#4FC08D' },
+  { name: 'FastAPI', icon: 'Check', color: '#009688' },
+  { name: 'Python', icon: 'Key', color: '#3776AB' },
+  { name: 'Element Plus', icon: 'Link', color: '#409EFF' },
   { name: 'maimai.py', icon: 'Maimai', color: '#FF6B6B' },
-  { name: 'SQLite', icon: 'Database', color: '#003B57' }
+  { name: 'SQLite', icon: 'Check', color: '#003B57' }
 ]
 
 // 图标组件映射
 const iconComponents = {
   User,
   DataAnalysis,
-  Music,
   Medal,
-  Vue,
-  Server,
-  Code,
-  ElementPlus,
-  Database,
-  Maimai
+  Link,
+  Check,
+  Key,
+  Maimai: MaimaiIcon
 }
 
 // 获取图标组件

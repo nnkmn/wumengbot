@@ -7,6 +7,7 @@ class WISpider(BaseSpider):
     allowed_domains = ["wi.sys-all.cn"]
     start_urls = ["https://wi.sys-all.cn/"]
     
+    """
     爬取wi.sys-all.cn域名的数据
     """
     

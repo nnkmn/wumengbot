@@ -8,6 +8,9 @@
 - **成绩查询**：查看玩家的成绩列表、Rating和b15成绩
 - **歌曲查询**：搜索和查看舞萌歌曲的详细信息
 - **牌子进度**：查看玩家的舞将、舞霸等牌子完成进度
+- **Segamaid绑定**：绑定Segamaid账号，获取更多舞萌数据
+- **数据存储**：使用SQLite数据库存储玩家数据和成绩信息
+- **自动爬虫**：定期爬取舞萌相关数据并更新到数据库
 
 ## 技术栈
 
@@ -15,6 +18,10 @@
 - Python 3.10+
 - FastAPI
 - maimai.py
+- SQLAlchemy (ORM框架)
+- SQLite (数据库)
+- Celery (任务队列，当前临时禁用)
+- Redis (消息代理，当前临时禁用)
 
 ### 前端
 - Vue 3
@@ -28,11 +35,22 @@
 wumengbot/
 ├── backend/              # 后端服务
 │   ├── app/              # 应用代码
+│   │   ├── api/          # API路由
+│   │   ├── core/         # 核心配置
+│   │   ├── models/       # 数据库模型
+│   │   ├── services/     # 业务逻辑
+│   │   ├── spiders/      # 爬虫代码
+│   │   └── main.py       # 应用入口
 │   ├── requirements.txt  # 依赖列表
 │   └── .env.example      # 环境变量示例
 ├── frontend/             # 前端界面
 │   ├── public/           # 静态资源
 │   ├── src/              # 源代码
+│   │   ├── api/          # API请求
+│   │   ├── components/   # 组件
+│   │   ├── views/        # 页面
+│   │   ├── router/       # 路由
+│   │   └── App.vue       # 应用入口
 │   ├── package.json      # 依赖配置
 │   └── vite.config.js    # Vite配置
 └── README.md             # 项目说明
@@ -97,6 +115,10 @@ wumengbot/
 3. 前端开发服务器已配置代理，将/api请求转发到后端服务
 4. 项目使用了异步编程，确保所有异步方法都使用了await关键字
 5. 所有API端点都已添加了错误处理，返回友好的错误信息
+6. Segamaid绑定功能需要正确配置Segamaid API相关参数
+7. 数据库使用SQLite，默认存储在backend/app/db目录下
+8. 爬虫系统当前直接运行，后续将支持Celery任务队列
+9. 首次运行时会自动创建数据库表结构
 
 ## 许可证
 

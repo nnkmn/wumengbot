@@ -45,5 +45,8 @@ export const api = {
   searchSongs: (params) => apiClient.get('/songs/search', { params }),
   
   // 牌子相关
-  getPlayerPlates: (params) => apiClient.get('/plates/player', { params })
+  getPlayerPlates: (params) => apiClient.get('/plates/player', { params }),
+  
+  // Segamaid相关
+  bindSegamaid: (data) => apiClient.post('/segamaid/bind', data)
 }

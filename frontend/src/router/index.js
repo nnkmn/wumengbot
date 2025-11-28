@@ -27,6 +27,11 @@ const router = createRouter({
       path: '/plates',
       name: 'plates',
       component: () => import('../views/PlatesView.vue')
+    },
+    {
+      path: '/segamaid',
+      name: 'segamaid',
+      component: () => import('../views/SegamaidView.vue')
     }
   ]
 })
