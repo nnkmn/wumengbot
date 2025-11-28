@@ -1,0 +1,46 @@
+# 爬虫框架
+scrapy>=2.11.0
+
+# HTTP客户端
+requests>=2.31.0
+httpx>=0.25.0
+
+# 解析库
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+
+# 数据处理
+pandas>=2.1.4
+numpy>=1.26.3
+
+# 数据库
+psycopg2-binary>=2.9.9
+alembic>=1.13.1
+redis>=5.0.1
+
+# 任务调度
+celery>=5.3.6
+apscheduler>=3.10.4
+
+# Web框架
+fastapi>=0.104.1
+uvicorn>=0.24.0
+
+# 数据可视化
+pyecharts>=2.0.3
+
+# 监控
+prometheus-client>=0.19.0
+grafana-api>=0.7.4
+
+# 其他
+python-dotenv>=1.0.0
+loguru>=0.7.2
+fake-useragent>=1.5.0
+proxy-py>=2.4.0
+
+# 开发工具
+pytest>=7.4.4
+black>=23.12.1
+flake8>=6.1.0
+mypy>=1.8.0
