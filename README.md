@@ -402,7 +402,7 @@ SOFTWARE.
 
 - 项目地址：https://github.com/nnkmn/wumengbot
 - 作者：nnkmn
-- 邮箱：your-email@example.com
+- 邮箱：171312730@qq.com
 
 ## 更新日志
 
