@@ -4,7 +4,7 @@ from typing import List, Union, Any, Dict
 class Settings(BaseSettings):
     # 应用配置
     app_name: str = "WumengBot"
-    app_version: str = "1.0.0"
+    app_version: str = "1.5.0"
     debug: bool = True
     
     # 服务器配置

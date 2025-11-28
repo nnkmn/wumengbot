@@ -225,7 +225,7 @@ LOGGING_CONFIG = {
 }
 
 # 版本信息
-VERSION = "1.0.0"
+VERSION = "1.5.0"
 AUTHOR = "Wumeng Crawler Team"
 DESCRIPTION = "舞萌数据爬取系统"
 
